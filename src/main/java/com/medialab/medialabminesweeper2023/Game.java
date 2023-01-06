@@ -1,7 +1,10 @@
 package com.medialab.medialabminesweeper2023;
 
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -17,6 +20,15 @@ public class Game {
 
     public Game() {
 
+    }
+
+    static void new_game() {
+        GridPane gridPane = new GridPane();
+        gridPane.add(Main.vBox, 0,0);
+        gridPane.add(Game.createContent(), 0,1);
+        Scene scene = new Scene(gridPane);
+        Main.stage.setScene(scene);
+        Main.stage.show();
     }
 
     static Parent createContent() {
@@ -83,7 +95,9 @@ public class Game {
 
         if (tile.hasBomb) {
             System.out.println("Game Over lmao");
-            Main.scene.setRoot(createContent());
+
+            new_game();
+
             return;
         }
 
