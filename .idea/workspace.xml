@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b06ae93-f28e-42d2-8c4e-ea760f0dc22e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/InvalidDescriptionException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/InvalidValueException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameWriter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +57,7 @@
       <option name="presentableId" value="Default" />
       <updated>1672961451668</updated>
       <workItem from="1672961453042" duration="3980000" />
-      <workItem from="1673012914589" duration="14368000" />
+      <workItem from="1673012914589" duration="21046000" />
     </task>
     <servers />
   </component>

@@ -18,10 +18,6 @@ public class Game {
     static Tile[][] grid = new Tile[X_TILES][Y_TILES];
     Scene scene;
 
-    public Game() {
-
-    }
-
     static void new_game() {
         GridPane gridPane = new GridPane();
         gridPane.add(Main.vBox, 0,0);

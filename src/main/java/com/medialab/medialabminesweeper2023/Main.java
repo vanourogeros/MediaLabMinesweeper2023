@@ -14,14 +14,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Main extends Application {
 
     static Scene scene;
     static Stage stage;
-    static GridPane gridPane;
-    Game game = new Game();
+    GridPane gridPane;
     final Menu menu1 = new Menu("Application");
     final Menu menu2 = new Menu("Details");
 
@@ -58,7 +58,9 @@ public class Main extends Application {
                 dialog.setTitle("Create Game");
 
                 // Create the form elements
+                TextField scenarioIDField = new TextField();
                 TextField numBombsField = new TextField();
+                TextField timeLimitField = new TextField();
                 CheckBox superbombCheckBox = new CheckBox("Superbomb");
                 ToggleGroup difficultyGroup = new ToggleGroup();
                 RadioButton easyButton = new RadioButton("Easy");
@@ -69,7 +71,9 @@ public class Main extends Application {
                 // Add the form elements to the dialog
                 VBox content = new VBox(10);
                 content.getChildren().addAll(
+                        new Label("Scenario ID:"), scenarioIDField,
                         new Label("Number of Bombs:"), numBombsField,
+                        new Label("Time Limit:"), timeLimitField,
                         superbombCheckBox,
                         new Label("Difficulty:"), easyButton, hardButton
                 );
@@ -87,11 +91,14 @@ public class Main extends Application {
                 // Process the user's response
                 if (result.isPresent() && result.get() == createButtonType) {
                     // User clicked the Create button, get the form values
+                    String scenarioID = scenarioIDField.getText();
                     int numBombs = Integer.parseInt(numBombsField.getText());
-                    boolean superbomb = superbombCheckBox.isSelected();
+                    int timeLimit = Integer.parseInt(timeLimitField.getText());
+                    int superbomb = superbombCheckBox.isSelected() ? 1 : 0;
                     RadioButton selectedButton = (RadioButton) difficultyGroup.getSelectedToggle();
-                    String difficulty = selectedButton.getText();
+                    int difficulty = Objects.equals(selectedButton.getText(), "Easy") ? 1 : 2;
                     // ...
+                    GameWriter.writeConfigFile(scenarioID, numBombs, superbomb, difficulty, timeLimit);
                 }
             }
         });
@@ -121,7 +128,7 @@ public class Main extends Application {
                         line = reader.readLine();
                         int superbomb = Integer.parseInt(line);
 
-                        // TODO: Validate values
+                        // Validate values
                         if (difficultyLevel == 1) {
                             if (numBombs < 9 || numBombs > 11)
                                 throw new InvalidValueException("Number of bombs is out of bounds (For easy difficulty no. of bombs must be between 9 and 11).");
