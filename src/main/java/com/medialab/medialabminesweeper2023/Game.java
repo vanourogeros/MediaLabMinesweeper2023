@@ -1,11 +1,13 @@
 package com.medialab.medialabminesweeper2023;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +20,46 @@ public class Game {
     static Tile[][] grid = new Tile[X_TILES][Y_TILES];
     Scene scene;
 
-    static void new_game() {
+    static Label timerLabel;
+    static int time;
+    static Timeline timeline;
+    static int difficultyLevel;
+    static int numBombs;
+    static int timeLimit;
+    static int superbomb;
+    boolean[] hasBomb;
+
+    private static void updateTimer() {
+        timerLabel.setText(String.format("Time: %d", time));
+    }
+    static void new_game(int numBombs, int superbomb, int difficulty, int timeLimit) {
+        time = timeLimit;
+        Game.timeLimit = timeLimit;
+        Game.numBombs = numBombs;
+        Game.difficultyLevel = difficulty;
+        Game.superbomb = superbomb;
+
         GridPane gridPane = new GridPane();
         gridPane.add(Main.vBox, 0,0);
-        gridPane.add(Game.createContent(), 0,1);
+        timerLabel = new Label();
+        timerLabel.setText(String.format("Time: %d", time));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            time--;
+            updateTimer();
+            if (time == 0) {
+                timeline.stop();
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        gridPane.add(timerLabel, 0, 1);
+        gridPane.add(Game.createContent(numBombs), 0,2);
         Scene scene = new Scene(gridPane);
         Main.stage.setScene(scene);
         Main.stage.show();
     }
 
-    static Parent createContent() {
+    static Parent createContent(int numBombs) {
         Pane root = new Pane();
         root.setPrefSize(X_TILES * TILE_SIZE, Y_TILES * TILE_SIZE);
 
@@ -92,7 +124,7 @@ public class Game {
         if (tile.hasBomb) {
             System.out.println("Game Over lmao");
 
-            new_game();
+            new_game(numBombs, superbomb, difficultyLevel, timeLimit);
 
             return;
         }

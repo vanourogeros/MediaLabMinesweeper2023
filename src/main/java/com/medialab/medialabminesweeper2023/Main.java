@@ -1,5 +1,7 @@
 package com.medialab.medialabminesweeper2023;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,7 +37,16 @@ public class Main extends Application {
     MenuItem roundsOption = new MenuItem("Rounds");
     MenuItem solutionOption = new MenuItem("Solution");
 
+    static int TIME_LIMIT = 120;
+    Label timerLabel;
+    int time;
+    Timeline timeline;
+    int difficultyLevel, numBombs, timeLimit, superbomb;
 
+
+    private void updateTimer() {
+        timerLabel.setText(String.format("Time remaining: %d seconds", time));
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -48,7 +60,6 @@ public class Main extends Application {
 
         vBox = new VBox(menuBar);
         gridPane.add(vBox, 0,0);
-        gridPane.add(Game.createContent(), 0,1);
 
 
         createOption.setOnAction(new EventHandler<ActionEvent>() {
@@ -120,13 +131,13 @@ public class Main extends Application {
                     // Parse file
                     try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                         String line = reader.readLine();
-                        int difficultyLevel = Integer.parseInt(line);
+                        difficultyLevel = Integer.parseInt(line);
                         line = reader.readLine();
-                        int numBombs = Integer.parseInt(line);
+                        numBombs = Integer.parseInt(line);
                         line = reader.readLine();
-                        int timeLimit = Integer.parseInt(line);
+                        timeLimit = Integer.parseInt(line);
                         line = reader.readLine();
-                        int superbomb = Integer.parseInt(line);
+                        superbomb = Integer.parseInt(line);
 
                         // Validate values
                         if (difficultyLevel == 1) {
@@ -188,11 +199,11 @@ public class Main extends Application {
         startOption.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 // Start a new game
-                Game.new_game();
+                Game.new_game(numBombs, superbomb, difficultyLevel, timeLimit);
             }
         });
 
-        scene = new Scene(gridPane, 360, 385);
+        scene = new Scene(gridPane, 400, 425);
 
         stage.setTitle("MediaLab Minesweeper");
         stage.setScene(scene);
