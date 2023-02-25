@@ -7,7 +7,7 @@ import java.util.List;
 public class GameResultFileHandler {
 
     private static final int MAX_RECORDS = 5;
-    private static final String FILE_NAME = "game_results.dat";
+    private static final String FILE_NAME = "./multimedia/game_results.dat";
 
     // Create the file and initialize with an empty list of game results
     public static void createFile() throws IOException {

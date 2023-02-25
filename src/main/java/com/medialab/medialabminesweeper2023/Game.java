@@ -10,8 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -34,14 +33,15 @@ public class Game {
     Scene scene;
 
     static Label timerLabel;
-    static int time;
+    static int time = 150;
     static int tries;
     static Timeline timeline;
-    static int difficultyLevel;
-    static int numBombs;
+    static int difficultyLevel = 1;
+    static int numBombs = 10;
     static int timeLimit;
     static int superbomb;
     boolean[] hasBomb;
+    static int openTiles = 0;
 
     static ScheduledExecutorService executor;
 
@@ -51,6 +51,7 @@ public class Game {
     static void new_game(int numBombs, int superbomb, int difficulty, int timeLimit) {
         time = timeLimit;
         tries = 0;
+        openTiles = 0;
         Game.timeLimit = timeLimit;
         Game.numBombs = numBombs;
         Game.difficultyLevel = difficulty;
@@ -78,7 +79,7 @@ public class Game {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText("Time's Up!");
-                        GameOverWindow.show(alert, numBombs, superbomb, difficultyLevel, timeLimit);
+                        GameOverWindow.show(alert, numBombs, superbomb, difficultyLevel, timeLimit, false);
                     });
                 }
             }, 0, 1, TimeUnit.SECONDS);
@@ -186,23 +187,35 @@ public class Game {
             System.out.println("Game Over lmao");
 
             Platform.runLater(() -> {
+                executor.shutdown();
                 GameResultFileHandler.saveGameResult(new GameResult("LOSE", time, tries));
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Game Over");
+                alert.setTitle("Game Over!");
                 alert.setHeaderText("Boom bozo");
-                GameOverWindow.show(alert, numBombs, superbomb, difficultyLevel, timeLimit);
+                GameOverWindow.show(alert, numBombs, superbomb, difficultyLevel, timeLimit, false);
             });
 
             return;
         }
 
         tile.isOpen = true;
+        openTiles++;
         tile.text.setVisible(true);
         tile.border.setFill(null);
         tile.getChildren().remove(tile.flagImage);
-
         if (tile.text.getText().isEmpty()) {
             getNeighbors(tile).forEach(Game::open);
+        }
+        if (openTiles == X_TILES * Y_TILES - numBombs) {
+            executor.shutdown();
+            System.out.println("You win!");
+            Platform.runLater(() -> {
+                GameResultFileHandler.saveGameResult(new GameResult("WIN", time, tries));
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Congrats bozo");
+                alert.setHeaderText("You win!");
+                GameOverWindow.show(alert, numBombs, superbomb, difficultyLevel, timeLimit, true);
+            });
         }
     }
 

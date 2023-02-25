@@ -5,10 +5,15 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -24,7 +29,7 @@ public class Main extends Application {
 
     static Scene scene;
     static Stage stage;
-    GridPane gridPane;
+    static GridPane gridPane;
     final Menu menu1 = new Menu("Application");
     final Menu menu2 = new Menu("Details");
 
@@ -41,7 +46,7 @@ public class Main extends Application {
     Label timerLabel;
     int time;
     Timeline timeline;
-    int difficultyLevel, numBombs, timeLimit, superbomb;
+    int difficultyLevel=1, numBombs=10, timeLimit=150, superbomb=0;
 
 
     private void updateTimer() {
@@ -152,12 +157,50 @@ public class Main extends Application {
         roundsOption.setOnAction(new ShowRecordsHandler());
 
         scene = new Scene(gridPane, 400, 425);
+        // Create a welcome screen
+        Label welcomeLabel = new Label("Welcome to Minesweeper+!");
+        welcomeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        welcomeLabel.setTextFill(Color.BLUE);
+        GridPane.setHalignment(welcomeLabel, HPos.CENTER);
+        GridPane.setValignment(welcomeLabel, VPos.CENTER);
+        gridPane.add(welcomeLabel, 0, 1);
+
+        Label subLabel = new Label("Click on Application>Load to load a new game or start a new\n game with default settings by clicking on Application>Start.");
+        GridPane.setHalignment(subLabel, HPos.CENTER);
+        GridPane.setValignment(subLabel, VPos.CENTER);
+        gridPane.add(subLabel, 0, 2);
+
+        ColumnConstraints columnConstraints = new ColumnConstraints();
+        columnConstraints.setPercentWidth(100);
+        gridPane.getColumnConstraints().add(columnConstraints);
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setPercentHeight(38);
+        gridPane.getRowConstraints().add(rowConstraints);
+
+        // Load the image
+        String currentDir = System.getProperty("user.dir");
+        Image image = new Image(currentDir + "/assets/boom.gif");
+
+        // Create a background image
+        BackgroundImage backgroundImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.REPEAT, // Repeat the image
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT
+        );
+
+        // Create a background
+        Background background = new Background(backgroundImage);
+
+        // Set the background of the scene
+        gridPane.setBackground(background);
 
         stage.setTitle("MediaLab Minesweeper");
         stage.setScene(scene);
         stage.show();
 
-        File file = new File("game_results.dat");
+        File file = new File("./multimedia/game_results.dat");
 
         if (!file.exists()) {
             try {
