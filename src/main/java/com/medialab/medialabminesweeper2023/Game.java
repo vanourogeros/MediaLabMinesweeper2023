@@ -29,6 +29,7 @@ public class Game {
 
     static Label timerLabel;
     static int time;
+    static int tries;
     static Timeline timeline;
     static int difficultyLevel;
     static int numBombs;
@@ -43,6 +44,7 @@ public class Game {
     }
     static void new_game(int numBombs, int superbomb, int difficulty, int timeLimit) {
         time = timeLimit;
+        tries = 0;
         Game.timeLimit = timeLimit;
         Game.numBombs = numBombs;
         Game.difficultyLevel = difficulty;
@@ -66,6 +68,7 @@ public class Game {
                 if (time == 0) {
                     executor.shutdown();
                     Platform.runLater(() -> {
+                        GameResultFileHandler.saveGameResult(new GameResult("LOSE", 0, tries));
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText("Time's Up!");
@@ -138,10 +141,12 @@ public class Game {
     public static void open(Tile tile) {
         if (tile.isOpen) return;
 
+        tries++;
         if (tile.hasBomb) {
             System.out.println("Game Over lmao");
 
             Platform.runLater(() -> {
+                GameResultFileHandler.saveGameResult(new GameResult("LOSE", time, tries));
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Game Over");
                 alert.setHeaderText("Boom bozo");

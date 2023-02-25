@@ -62,11 +62,7 @@ public class Main extends Application {
         gridPane.add(vBox, 0,0);
 
 
-        createOption.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                createOption.setOnAction(new CreateOptionHandler());
-            }
-        });
+        createOption.setOnAction(new CreateOptionHandler());
 
         loadOption.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -152,6 +148,8 @@ public class Main extends Application {
                 Game.new_game(numBombs, superbomb, difficultyLevel, timeLimit);
             }
         });
+
+        roundsOption.setOnAction(new ShowRecordsHandler());
 
         scene = new Scene(gridPane, 400, 425);
 

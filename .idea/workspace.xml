@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b06ae93-f28e-42d2-8c4e-ea760f0dc22e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/CreateOptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameOverWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResultFileHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/ShowRecordsHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/medialab/medialabminesweeper2023/hello-view.fxml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +60,7 @@
       <workItem from="1672961453042" duration="3980000" />
       <workItem from="1673012914589" duration="21046000" />
       <workItem from="1673187041922" duration="7618000" />
-      <workItem from="1677265450739" duration="10440000" />
+      <workItem from="1677265450739" duration="14081000" />
     </task>
     <servers />
   </component>
