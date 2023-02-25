@@ -8,12 +8,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +62,7 @@ public class Game {
         timerLabel = new Label();
         timerLabel.setText(String.format("Time: %d", time));
         gridPane.add(timerLabel, 0, 1);
-        gridPane.add(Game.createContent(numBombs), 0,2);
+        gridPane.add(Game.createContent(numBombs, difficulty, superbomb), 0,2);
         Scene scene = new Scene(gridPane);
         Main.stage.setScene(scene);
         Main.stage.show();
@@ -79,13 +85,48 @@ public class Game {
         }
     }
 
-    static Parent createContent(int numBombs) {
+    static Parent createContent(int numBombs, int difficulty, int superbomb) {
+        X_TILES = Y_TILES = difficulty == 2 ? 16 : 9; // Hard difficulty has 16x16 grid, Easy 9x9
+        grid = new Tile[X_TILES][Y_TILES];
         Pane root = new Pane();
         root.setPrefSize(X_TILES * TILE_SIZE, Y_TILES * TILE_SIZE);
 
+        Random random = new Random();
+        boolean[][] bombs_map = new boolean[X_TILES][Y_TILES]; // Array with places with bombs
+        List<int[]> bombList = new ArrayList<>(); // initialize bomb location list
+        List<String> mineLines = new ArrayList<>();
+
+        for (int i = 0; i < numBombs; i++) {
+            int row, col;
+            do {
+                row = random.nextInt(X_TILES); // random row index
+                col = random.nextInt(Y_TILES); // random column index
+            } while (bombs_map[row][col] == true); // ensure no two bombs are placed at the same position
+
+            bombs_map[row][col] = true;
+            bombList.add(new int[]{row, col}); // append (row, col) to bomb list
+        }
+
+        int superbombIndex = random.nextInt(bombList.size());
+
+        for (int i = 0; i < numBombs; i++) {
+            int[] bomb_list_elem = bombList.get(i);
+            String isSuperbomb = i == superbombIndex ? "1" : "0";
+            mineLines.add(bomb_list_elem[0] + "," + bomb_list_elem[1] + "," + isSuperbomb);
+        }
+
+        // Write the mineLines to file
+        try (PrintWriter writer = new PrintWriter("multimedia/mines.txt")) {
+            for (String line : mineLines) {
+                writer.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         for (int y = 0; y < Y_TILES; y++) {
             for (int x = 0; x < X_TILES; x++) {
-                Tile tile = new Tile(x, y, Math.random() < 0.2);
+                Tile tile = new Tile(x, y, bombs_map[x][y]);
 
                 grid[x][y] = tile;
                 root.getChildren().add(tile);
@@ -141,7 +182,6 @@ public class Game {
     public static void open(Tile tile) {
         if (tile.isOpen) return;
 
-        tries++;
         if (tile.hasBomb) {
             System.out.println("Game Over lmao");
 
@@ -159,10 +199,28 @@ public class Game {
         tile.isOpen = true;
         tile.text.setVisible(true);
         tile.border.setFill(null);
+        tile.getChildren().remove(tile.flagImage);
 
         if (tile.text.getText().isEmpty()) {
             getNeighbors(tile).forEach(Game::open);
         }
+    }
+
+    public static void mark(Tile tile) {
+        if (tile.isMarked) {
+            tile.isMarked = false;
+            // Remove Image
+            tile.getChildren().remove(tile.flagImage);
+            return;
+        }
+        // Add flag Image
+        String currentDir = System.getProperty("user.dir");
+        tile.isMarked = true;
+        Image flagImg = new Image(currentDir + "/assets/flag.png");
+        tile.flagImage = new ImageView(flagImg);
+        tile.flagImage.setFitWidth(tile.getWidth());
+        tile.flagImage.setFitHeight(tile.getHeight());
+        tile.getChildren().add(tile.flagImage);
     }
 
 

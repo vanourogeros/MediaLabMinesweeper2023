@@ -34,11 +34,9 @@ public class GameResultFileHandler {
     public static void saveGameResult(GameResult gameResult) {
         List<GameResult> gameResults = loadGameResults();
         gameResults.add(0, gameResult);
-        if (gameResults.size() > 5) {
-            gameResults = gameResults.subList(0, 5);
-        }
+        List<GameResult> lastFiveResults = new ArrayList<>(gameResults.subList(0, Math.min(gameResults.size(), 5)));
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
-            oos.writeObject(gameResults);
+            oos.writeObject(lastFiveResults);
         } catch (IOException e) {
             System.err.println("Error saving game results to file: " + e.getMessage());
         }

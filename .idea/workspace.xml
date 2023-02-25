@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b06ae93-f28e-42d2-8c4e-ea760f0dc22e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/ShowRecordsHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game_results.dat" beforeDir="false" afterPath="$PROJECT_DIR$/game_results.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResultFileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/GameResultFileHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/medialab/medialabminesweeper2023/Tile.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +49,26 @@
       <recent name="com.medialab.medialabminesweeper2023" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.medialab.medialabminesweeper2023.Main" />
+      <module name="MediaLabMinesweeper2023" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.medialab.medialabminesweeper2023.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -60,7 +80,7 @@
       <workItem from="1672961453042" duration="3980000" />
       <workItem from="1673012914589" duration="21046000" />
       <workItem from="1673187041922" duration="7618000" />
-      <workItem from="1677265450739" duration="14081000" />
+      <workItem from="1677265450739" duration="19506000" />
     </task>
     <servers />
   </component>
