@@ -6,6 +6,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
+import java.io.FileNotFoundException;
 import java.util.Objects;
 
 public class GameOverWindow {
@@ -30,7 +31,11 @@ public class GameOverWindow {
         alert.getButtonTypes().setAll(restartButton, exitButton);
         alert.showAndWait().ifPresent(buttonType -> {
             if (buttonType == restartButton) {
-                Game.new_game(numBombs, superbomb, difficultyLevel, timeLimit);
+                try {
+                    Game.new_game(numBombs, superbomb, difficultyLevel, timeLimit);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 Main.stage.close();
             }

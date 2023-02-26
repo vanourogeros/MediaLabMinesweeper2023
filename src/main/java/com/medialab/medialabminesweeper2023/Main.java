@@ -18,10 +18,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -150,11 +147,17 @@ public class Main extends Application {
         startOption.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 // Start a new game
-                Game.new_game(numBombs, superbomb, difficultyLevel, timeLimit);
+                try {
+                    Game.new_game(numBombs, superbomb, difficultyLevel, timeLimit);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
         roundsOption.setOnAction(new ShowRecordsHandler());
+
+        solutionOption.setOnAction(new ShowSolutionHandler());
 
         scene = new Scene(gridPane, 400, 425);
         // Create a welcome screen

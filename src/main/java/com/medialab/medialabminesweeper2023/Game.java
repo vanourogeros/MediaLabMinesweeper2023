@@ -12,10 +12,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,13 +43,15 @@ public class Game {
     static int superbomb;
     boolean[] hasBomb;
     static int openTiles = 0;
+    static int superbomb_x;
+    static int superbomb_y;
 
     static ScheduledExecutorService executor;
 
     private static void updateTimer() {
         timerLabel.setText(String.format("Time: %d", time));
     }
-    static void new_game(int numBombs, int superbomb, int difficulty, int timeLimit) {
+    static void new_game(int numBombs, int superbomb, int difficulty, int timeLimit) throws FileNotFoundException {
         time = timeLimit;
         tries = 0;
         openTiles = 0;
@@ -86,7 +89,7 @@ public class Game {
         }
     }
 
-    static Parent createContent(int numBombs, int difficulty, int superbomb) {
+    static Parent createContent(int numBombs, int difficulty, int superbomb) throws FileNotFoundException {
         X_TILES = Y_TILES = difficulty == 2 ? 16 : 9; // Hard difficulty has 16x16 grid, Easy 9x9
         grid = new Tile[X_TILES][Y_TILES];
         Pane root = new Pane();
@@ -100,11 +103,11 @@ public class Game {
         for (int i = 0; i < numBombs; i++) {
             int row, col;
             do {
-                row = random.nextInt(X_TILES); // random row index
-                col = random.nextInt(Y_TILES); // random column index
+                row = random.nextInt(Y_TILES); // random row index
+                col = random.nextInt(X_TILES); // random column index
             } while (bombs_map[row][col] == true); // ensure no two bombs are placed at the same position
 
-            bombs_map[row][col] = true;
+            bombs_map[col][row] = true;
             bombList.add(new int[]{row, col}); // append (row, col) to bomb list
         }
 
@@ -112,7 +115,14 @@ public class Game {
 
         for (int i = 0; i < numBombs; i++) {
             int[] bomb_list_elem = bombList.get(i);
-            String isSuperbomb = i == superbombIndex ? "1" : "0";
+            String isSuperbomb;
+            if (i == superbombIndex && difficulty == 2 && superbomb == 1) {
+                isSuperbomb = "1";
+                superbomb_x = bomb_list_elem[1];
+                superbomb_y = bomb_list_elem[0];
+            }
+            else
+             isSuperbomb = "0";
             mineLines.add(bomb_list_elem[0] + "," + bomb_list_elem[1] + "," + isSuperbomb);
         }
 
@@ -133,17 +143,32 @@ public class Game {
                 root.getChildren().add(tile);
             }
         }
+        Font font = Font.loadFont(new FileInputStream(new File("./assets/PressStart2P-Regular.ttf")), 16);
 
         for (int y = 0; y < Y_TILES; y++) {
             for (int x = 0; x < X_TILES; x++) {
                 Tile tile = grid[x][y];
+                tile.text.setFont(font);
 
-                if (tile.hasBomb) continue;
+                if (tile.hasBomb) {
+                    tile.text.setFill(Color.MAROON);
+                    continue;
+                }
 
                 long bombs = getNeighbors(tile).stream().filter(t -> t.hasBomb).count();
 
-                if (bombs > 0)
+                if (bombs > 0) {
                     tile.text.setText(String.valueOf(bombs));
+
+                    switch ((int) bombs) {
+                        case 1 -> tile.text.setFill(Color.BLUE);
+                        case 2 -> tile.text.setFill(Color.GREEN);
+                        case 3 -> tile.text.setFill(Color.RED);
+                        default -> tile.text.setFill(Color.BLACK);
+                    }
+
+                }
+
             }
         }
 
@@ -206,17 +231,6 @@ public class Game {
         if (tile.text.getText().isEmpty()) {
             getNeighbors(tile).forEach(Game::open);
         }
-        if (openTiles == X_TILES * Y_TILES - numBombs) {
-            executor.shutdown();
-            System.out.println("You win!");
-            Platform.runLater(() -> {
-                GameResultFileHandler.saveGameResult(new GameResult("WIN", time, tries));
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Congrats bozo");
-                alert.setHeaderText("You win!");
-                GameOverWindow.show(alert, numBombs, superbomb, difficultyLevel, timeLimit, true);
-            });
-        }
     }
 
     public static void mark(Tile tile) {
@@ -234,6 +248,16 @@ public class Game {
         tile.flagImage.setFitWidth(tile.getWidth());
         tile.flagImage.setFitHeight(tile.getHeight());
         tile.getChildren().add(tile.flagImage);
+
+        if (difficultyLevel == 2 && superbomb == 1) {
+            if (tile.x == superbomb_x && tile.y == superbomb_y && tries <= 3) {
+                System.out.println("found the superbomb!");
+                for (int dx = 0; dx < X_TILES; dx++)
+                    grid[dx][tile.y].Reveal();
+                for (int dy = 0; dy < Y_TILES; dy++)
+                    grid[tile.x][dy].Reveal();
+            }
+        }
     }
 
 

@@ -1,5 +1,7 @@
 package com.medialab.medialabminesweeper2023;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -11,7 +13,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import static com.medialab.medialabminesweeper2023.Game.getNeighbors;
+import static com.medialab.medialabminesweeper2023.Game.*;
 
 public class Tile extends StackPane {
     static int TILE_SIZE = 40;
@@ -55,6 +57,17 @@ public class Tile extends StackPane {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (!this.isOpen) Game.tries++;
                 Game.open(this);
+                if (Game.openTiles == X_TILES * Y_TILES - numBombs) {
+                    Game.executor.shutdown();
+                    System.out.println("You win!");
+                    Platform.runLater(() -> {
+                        GameResultFileHandler.saveGameResult(new GameResult("WIN", time, tries));
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Congrats bozo");
+                        alert.setHeaderText("You win!");
+                        GameOverWindow.show(alert, numBombs, superbomb, difficultyLevel, timeLimit, true);
+                    });
+                }
             } else if (e.getButton() == MouseButton.SECONDARY) {
                 if (!this.isOpen) // Can only mark closed tiles
                     Game.mark(this);
@@ -62,7 +75,14 @@ public class Tile extends StackPane {
         });
     }
 
-
+    public void Reveal() {
+        if (this.isOpen) return;
+        this.isOpen = true;
+        Game.openTiles++;
+        this.text.setVisible(true);
+        this.border.setFill(null);
+        this.getChildren().remove(this.flagImage);
+    }
 
 
 
