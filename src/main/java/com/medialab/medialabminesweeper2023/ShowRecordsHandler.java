@@ -27,7 +27,7 @@ import java.util.List;
 public class ShowRecordsHandler implements EventHandler<ActionEvent> {
 
     /**
-     * Handles the "Records" button click event. Loads the game results from the file,
+     * Handles the "Rounds" button click event. Loads the game results from the file,
      * displays them in a table, and shows a new window with the table.
      *
      * @param event The ActionEvent object representing the button click event.
@@ -39,7 +39,7 @@ public class ShowRecordsHandler implements EventHandler<ActionEvent> {
 
         // Set up the table columns
         TableColumn<GameResult, String> resultColumn = new TableColumn<>("Result");
-        TableColumn<GameResult, Integer> timeColumn = new TableColumn<>("Time (s)");
+        TableColumn<GameResult, Integer> timeColumn = new TableColumn<>("Time Rem. (s)");
         TableColumn<GameResult, Integer> triesColumn = new TableColumn<>("Tries");
 
         // Set the cell value factories for each column

@@ -3,6 +3,7 @@ package com.medialab.medialabminesweeper2023;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -80,7 +81,9 @@ public class Game {
         gridPane.add(Main.vBox, 0,0);
         timerLabel = new Label();
         timerLabel.setText(String.format("Time: %d", time));
+        timerLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: blue;");
         gridPane.add(timerLabel, 0, 1);
+        GridPane.setHalignment(timerLabel, HPos.CENTER);
         gridPane.add(Game.createContent(numBombs, difficulty, superbomb), 0,2);
         Scene scene = new Scene(gridPane);
         Main.stage.setScene(scene);

@@ -43,11 +43,10 @@ public class Main extends Application {
     MenuItem roundsOption = new MenuItem("Rounds");
     MenuItem solutionOption = new MenuItem("Solution");
 
-    static int TIME_LIMIT = 120;
     Label timerLabel;
     int time;
     Timeline timeline;
-    int difficultyLevel=1, numBombs=10, timeLimit=150, superbomb=0;
+    int difficultyLevel=1, numBombs=10, timeLimit=150, superbomb=0; // default values if a file isn't provided.
 
 
     private void updateTimer() {
