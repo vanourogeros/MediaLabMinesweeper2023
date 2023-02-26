@@ -9,7 +9,24 @@ import javafx.scene.layout.*;
 import java.io.FileNotFoundException;
 import java.util.Objects;
 
+/**
+ * This class represents the game over window that appears when the game ends.
+ * It displays a message, a gif image (balloons or explosions), and two buttons for restarting or exiting the game.
+ */
 public class GameOverWindow {
+
+    /**
+     * Shows the game over window. The parameters provided are to
+     * restart the game with the same game parameters. The isWin parameter
+     * is for the image shown in the window.
+     *
+     * @param alert           The alert that will be used to show the game over message.
+     * @param numBombs        The number of bombs in the game.
+     * @param superbomb       The number of superbombs in the game.
+     * @param difficultyLevel The difficulty level of the game.
+     * @param timeLimit       The time limit of the game.
+     * @param isWin           Whether the game ended in a win or a loss.
+     */
     public static void show(Alert alert, int numBombs, int superbomb, int difficultyLevel, int timeLimit, boolean isWin) {
         // Create a Region for the background
         Region background = new Region();

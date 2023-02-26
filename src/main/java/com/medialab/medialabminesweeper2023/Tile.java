@@ -15,6 +15,10 @@ import javafx.scene.text.Text;
 
 import static com.medialab.medialabminesweeper2023.Game.*;
 
+/**
+ * A Tile represents a single square on the Minesweeper game board.
+ * Each Tile can be either open or closed, marked with a flag or not, and may or may not contain a bomb.
+ */
 public class Tile extends StackPane {
     static int TILE_SIZE = 40;
     int x, y;
@@ -25,6 +29,12 @@ public class Tile extends StackPane {
     Rectangle border = new Rectangle(TILE_SIZE - 2, TILE_SIZE - 2);
     Text text = new Text();
 
+    /**
+     * Constructs a new Tile object.
+     * @param x The x-coordinate of the tile on the game board (between 0 and X_TILES-1).
+     * @param y The y-coordinate of the tile on the game board (between 0 and X_TILES-1).
+     * @param hasBomb Whether the tile contains a bomb or not.
+     */
     public Tile(int x, int y, boolean hasBomb){
         this.x = x;
         this.y = y;
@@ -57,10 +67,13 @@ public class Tile extends StackPane {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (!this.isOpen) Game.tries++;
                 Game.open(this);
+
+                // Check for win Condition upon tapping a tile
                 if (Game.openTiles == X_TILES * Y_TILES - numBombs) {
                     Game.executor.shutdown();
                     System.out.println("You win!");
                     Platform.runLater(() -> {
+                        // Win window
                         GameResultFileHandler.saveGameResult(new GameResult("WIN", time, tries));
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("Congrats bozo");
@@ -75,7 +88,10 @@ public class Tile extends StackPane {
         });
     }
 
-    public void Reveal() {
+    /**
+     * Reveals the contents of the tile.
+     */
+    void Reveal() {
         if (this.isOpen) return;
         this.isOpen = true;
         Game.openTiles++;

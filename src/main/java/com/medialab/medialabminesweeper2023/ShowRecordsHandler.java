@@ -18,8 +18,20 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class implements the event handler for showing the game records in a table.
+ * It loads the game results from a file, creates a table with the top 5 results,
+ * and displays the table in a new window.
+ */
+
 public class ShowRecordsHandler implements EventHandler<ActionEvent> {
 
+    /**
+     * Handles the "Records" button click event. Loads the game results from the file,
+     * displays them in a table, and shows a new window with the table.
+     *
+     * @param event The ActionEvent object representing the button click event.
+     */
     @Override
     public void handle(ActionEvent event) {
         // Load the game results from the file

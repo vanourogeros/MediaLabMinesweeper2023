@@ -27,6 +27,11 @@ import java.util.concurrent.TimeUnit;
 import static com.medialab.medialabminesweeper2023.Tile.TILE_SIZE;
 import com.medialab.medialabminesweeper2023.GameOverWindow;
 
+/**
+ * The Game class represents a Minesweeper game. It stores the state of the game, including the game board, the number
+ * of bombs, the game timer, opened tiles, etc. It provides methods to start the game, reveal a cell, flag a cell, and check the game
+ * status, and it can also trigger a game over event (when the user wins or loses the game).
+ */
 public class Game {
     static int X_TILES = 9;
     static int Y_TILES = 9;
@@ -51,6 +56,16 @@ public class Game {
     private static void updateTimer() {
         timerLabel.setText(String.format("Time: %d", time));
     }
+
+    /**
+     * Starts a new game with the specified number of bombs, superbomb existence, difficulty level, and time limit.
+     *
+     * @param numBombs the number of bombs to be placed in the game
+     * @param superbomb 0 if superbomb doesn't exist, 1 if exists
+     * @param difficulty the difficulty level of the game (1 for easy, 2 for hard)
+     * @param timeLimit the time limit for the game, in seconds
+     * @throws FileNotFoundException if the file to save the game result cannot be found
+     */
     static void new_game(int numBombs, int superbomb, int difficulty, int timeLimit) throws FileNotFoundException {
         time = timeLimit;
         tries = 0;
@@ -88,6 +103,17 @@ public class Game {
             }, 0, 1, TimeUnit.SECONDS);
         }
     }
+
+    /**
+     * Creates the game board with the specified number of bombs, difficulty level, and super-bomb (if exists).
+     * Returns a Parent object that contains the game board.
+     *
+     * @param numBombs the number of bombs to be placed on the board
+     * @param difficulty the difficulty level of the game (1 for easy, 2 for hard)
+     * @param superbomb super-bomb to be used (0 for disabled, 1 for enabled)
+     * @return a Parent object that contains the game board
+     * @throws FileNotFoundException if the font file for the game is not found
+     */
 
     static Parent createContent(int numBombs, int difficulty, int superbomb) throws FileNotFoundException {
         X_TILES = Y_TILES = difficulty == 2 ? 16 : 9; // Hard difficulty has 16x16 grid, Easy 9x9
@@ -175,6 +201,12 @@ public class Game {
         return root;
     }
 
+    /**
+     * Returns a list of the neighboring tiles for the given tile.
+     *
+     * @param tile the tile for which to find neighbors
+     * @return a list of neighboring tiles
+     */
     static List<Tile> getNeighbors(Tile tile) {
         List<Tile> neighbors = new ArrayList<>();
 
@@ -205,6 +237,12 @@ public class Game {
         return neighbors;
     }
 
+    /**
+     * Reveals the tile and recursively reveals all neighboring tiles with no adjacent bombs.
+     * If the tile contains a bomb, ends the game and displays the Game Over window.
+     *
+     * @param tile the tile to open
+     */
     public static void open(Tile tile) {
         if (tile.isOpen) return;
 
@@ -223,16 +261,20 @@ public class Game {
             return;
         }
 
-        tile.isOpen = true;
-        openTiles++;
-        tile.text.setVisible(true);
-        tile.border.setFill(null);
-        tile.getChildren().remove(tile.flagImage);
+        tile.Reveal();
         if (tile.text.getText().isEmpty()) {
             getNeighbors(tile).forEach(Game::open);
         }
     }
 
+    /**
+     * Marks the given tile with a red flag, or un-marks it
+     * if it already has a flag. If a super-bomb (for hard difficulty) is marked
+     * within the first 4 tries, all the tiles in the same
+     * row and column are safely revealed.
+     *
+     * @param tile the tile to be marked (or unmarked)
+     */
     public static void mark(Tile tile) {
         if (tile.isMarked) {
             tile.isMarked = false;

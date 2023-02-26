@@ -8,8 +8,21 @@ import javafx.scene.layout.VBox;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * This class represents a handler for the "Create" button in the game UI.
+ * It opens a dialog box with a form for the user to input game configuration data.
+ * When the user clicks the "Create" button, the handler reads the form data and writes it to
+ * a configuration .txt file in the Medialab folder.
+ */
 public class CreateOptionHandler implements EventHandler<ActionEvent> {
 
+    /**
+     * This method handles the "Create" menu option click event.
+     * It opens a dialog box with a form for the user to input game configuration data.
+     * When the user clicks the "Create" button, the handler reads the form data and writes it to a configuration file.
+     *
+     * @param t The ActionEvent object representing the "Create Game" button click event.
+     */
     public void handle(ActionEvent t) {
         // Create the dialog
         Dialog<ButtonType> dialog = new Dialog<>();

@@ -22,6 +22,10 @@ import java.io.*;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The Main class is the entry point for the MediaLab Minesweeper game application.
+ * It defines the game's UI and event handlers.
+ */
 public class Main extends Application {
 
     static Scene scene;
@@ -50,6 +54,12 @@ public class Main extends Application {
         timerLabel.setText(String.format("Time remaining: %d seconds", time));
     }
 
+    /**
+     * The start method is called by the JavaFX runtime when the game application is launched.
+     * It initializes the game's UI and sets up event handlers.
+     * @param stage the primary stage for the game application
+     * @throws IOException if an IO error occurs
+     */
     @Override
     public void start(Stage stage) throws IOException {
         Main.stage = stage;
@@ -216,7 +226,10 @@ public class Main extends Application {
     }
 
 
-
+    /**
+     * The main method that starts the JavaFX application.
+     * @param args an array of command-line arguments for the application
+     */
     public static void main(String[] args) {
         launch();
     }
