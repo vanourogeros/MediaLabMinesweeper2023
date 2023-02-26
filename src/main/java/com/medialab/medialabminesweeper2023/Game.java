@@ -250,7 +250,7 @@ public class Game {
         tile.getChildren().add(tile.flagImage);
 
         if (difficultyLevel == 2 && superbomb == 1) {
-            if (tile.x == superbomb_x && tile.y == superbomb_y && tries <= 3) {
+            if (tile.x == superbomb_x && tile.y == superbomb_y && tries <= 4) {
                 System.out.println("found the superbomb!");
                 for (int dx = 0; dx < X_TILES; dx++)
                     grid[dx][tile.y].Reveal();
