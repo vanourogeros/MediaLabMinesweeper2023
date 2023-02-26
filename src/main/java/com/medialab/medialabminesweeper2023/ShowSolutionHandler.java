@@ -24,7 +24,12 @@ public class ShowSolutionHandler implements EventHandler<ActionEvent> {
     public void handle(ActionEvent actionEvent) {
         for(int i = 0; i < X_TILES; i++)
             for (int j = 0; j < Y_TILES; j++) {
-                grid[i][j].Reveal();
+                try {
+                    grid[i][j].Reveal();
+                }
+                catch (NullPointerException e) {
+                    return; // Game has not started yet
+                }
             }
 
         Platform.runLater(() -> {

@@ -125,19 +125,25 @@ public class Main extends Application {
                     } catch (IOException e) {
                         // There was an error reading the file
                     } catch (NumberFormatException e) {
-                        // One of the values could not be parsed as an integer
                         try {
+                            difficultyLevel = 1;
+                            numBombs = 10;
+                            timeLimit = 150;
+                            superbomb = 0;
                             throw new InvalidDescriptionException("Invalid file format");
                         } catch (InvalidDescriptionException ex) {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Warning");
                             alert.setHeaderText(null);
                             alert.setContentText(ex.getErrorMessage());
                             alert.showAndWait();
                         }
                     } catch (InvalidValueException e) {
-                        // One of the values could not be parsed as an integer
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        difficultyLevel = 1;
+                        numBombs = 10;
+                        timeLimit = 150;
+                        superbomb = 0;
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Warning");
                         alert.setContentText(e.getErrorMessage());
                         alert.showAndWait();
