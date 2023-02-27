@@ -95,7 +95,7 @@ public class Tile extends StackPane {
     void Reveal() {
         if (this.isOpen) return;
         this.isOpen = true;
-        Game.openTiles++;
+        if (!this.hasBomb) Game.openTiles++; // Don't count revealed bombs (from superbomb) as opened
         this.text.setVisible(true);
         this.border.setFill(null);
         this.getChildren().remove(this.flagImage);
