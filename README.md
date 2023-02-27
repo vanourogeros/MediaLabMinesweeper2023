@@ -4,14 +4,14 @@
 This is a slight variation of the famous Minesweeper game in Java using JavaFX - a Project for ECE NTUA 7th Semester Course "Multimedia Technology", and also my first ever project in Java.
 In this game a "superbomb" is introduced: A mine that reveals all the tiles in the same row and column if it is marked correctly in the first 4 tries (only in hard mode).
 
-![image](https://user-images.githubusercontent.com/61976410/221439807-788d3990-f32f-4a5d-9932-dec4b591fd3b.png)
-![image](https://user-images.githubusercontent.com/61976410/221439929-33fae166-ec2c-4890-8441-d04f6dee1703.png)
+![image](https://user-images.githubusercontent.com/61976410/221452722-44945e6f-2ff9-4d43-8e9a-f0c06528e13b.png)
+![image](https://user-images.githubusercontent.com/61976410/221452516-31927d09-6cd6-465e-9ff4-a0d8c486ec67.png)
 
 In this app a user can generate (Application>Create) and use (Application>Load, then Application>Start) a scenario that contains the difficulty level, number of bombs, and time limit. That scenario description is saved in the "multimedia" folder.
 
 Effect of correctly marking a Superbomb:
 
-![image](https://user-images.githubusercontent.com/61976410/221440009-f7623ad2-f98f-49bb-9e9a-fc0f0db3c51f.png)
+![image](https://user-images.githubusercontent.com/61976410/221452641-43cd88e3-e0d8-4150-a493-763d021312b6.png)
 
 Records of last five rounds (Details>Rounds):
 
