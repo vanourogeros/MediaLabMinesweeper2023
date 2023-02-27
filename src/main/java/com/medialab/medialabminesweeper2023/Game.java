@@ -40,6 +40,8 @@ public class Game {
     Scene scene;
 
     static Label timerLabel;
+    static Label bombLabel;
+    static Label markLabel;
     static int time = 150;
     static int tries;
     static Timeline timeline;
@@ -51,11 +53,15 @@ public class Game {
     static int openTiles = 0;
     static int superbomb_x;
     static int superbomb_y;
+    static int marks;
 
     static ScheduledExecutorService executor;
 
     private static void updateTimer() {
         timerLabel.setText(String.format("Time: %d", time));
+    }
+    static void updateMarks() {
+        markLabel.setText(String.format("Marks: %d", marks));
     }
 
     /**
@@ -69,6 +75,7 @@ public class Game {
      */
     static void new_game(int numBombs, int superbomb, int difficulty, int timeLimit) throws FileNotFoundException {
         time = timeLimit;
+        marks = 0;
         tries = 0;
         openTiles = 0;
         Game.timeLimit = timeLimit;
@@ -80,10 +87,32 @@ public class Game {
         GridPane gridPane = new GridPane();
         gridPane.add(Main.vBox, 0,0);
         timerLabel = new Label();
+        bombLabel = new Label(String.format("Bombs: %d", numBombs));
+        markLabel = new Label("Marks: 0");
         timerLabel.setText(String.format("Time: %d", time));
-        timerLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: blue;");
+        timerLabel.setStyle("-fx-border-color: slategrey; -fx-background-color: lightgrey; -fx-font-size: 16px; -fx-text-fill: red; -fx-background-radius: 7.5; -fx-border-radius: 7.5");
+        bombLabel.setStyle("-fx-border-color: slategrey; -fx-background-color: lightgrey; -fx-font-size: 16px; -fx-text-fill: blue; -fx-background-radius: 7.5; -fx-border-radius: 7.5");
+        markLabel.setStyle("-fx-border-color: slategrey; -fx-background-color: lightgrey; -fx-font-size: 16px; -fx-text-fill: red; -fx-background-radius: 7.5; -fx-border-radius: 7.5");
         gridPane.add(timerLabel, 0, 1);
+        gridPane.add(bombLabel, 1, 1);
+        gridPane.add(markLabel, 2, 1);
+        int tiles = difficulty == 1 ? 9 : 16;
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPrefWidth(tiles * TILE_SIZE / 3.0);
+        column1.setHgrow(Priority.ALWAYS);
+
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPrefWidth(tiles * TILE_SIZE / 3.0);
+        column2.setHgrow(Priority.ALWAYS);
+
+        ColumnConstraints column3 = new ColumnConstraints();
+        column3.setPrefWidth(tiles * TILE_SIZE / 3.0);
+        column3.setHgrow(Priority.ALWAYS);
+
+        gridPane.getColumnConstraints().addAll(column1, column2, column3);
         GridPane.setHalignment(timerLabel, HPos.CENTER);
+        GridPane.setHalignment(bombLabel, HPos.CENTER);
+        GridPane.setHalignment(markLabel, HPos.CENTER);
         gridPane.add(Game.createContent(numBombs, difficulty, superbomb), 0,2);
         Scene scene = new Scene(gridPane);
         Main.stage.setScene(scene);
@@ -92,7 +121,7 @@ public class Game {
             executor = Executors.newScheduledThreadPool(1);
             executor.scheduleAtFixedRate(() -> {
                 time--;
-                Platform.runLater(() -> updateTimer());
+                Platform.runLater(Game::updateTimer);
                 if (time == 0) {
                     executor.shutdown();
                     Platform.runLater(() -> {
@@ -280,13 +309,16 @@ public class Game {
      */
     public static void mark(Tile tile) {
         if (tile.isMarked) {
+            marks--;
             tile.isMarked = false;
             // Remove Image
             tile.getChildren().remove(tile.flagImage);
+            updateMarks();
             return;
         }
         // Add flag Image
         String currentDir = System.getProperty("user.dir");
+        marks++;
         tile.isMarked = true;
         Image flagImg = new Image(currentDir + "/assets/flag.png");
         tile.flagImage = new ImageView(flagImg);
@@ -303,6 +335,7 @@ public class Game {
                     grid[tile.x][dy].Reveal();
             }
         }
+        updateMarks();
     }
 
 

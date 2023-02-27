@@ -67,6 +67,7 @@ public class Tile extends StackPane {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (!this.isOpen) Game.tries++;
                 Game.open(this);
+                Game.updateMarks();
 
                 // Check for win Condition upon tapping a tile
                 if (Game.openTiles == X_TILES * Y_TILES - numBombs) {
@@ -98,6 +99,7 @@ public class Tile extends StackPane {
         this.text.setVisible(true);
         this.border.setFill(null);
         this.getChildren().remove(this.flagImage);
+        if (this.isMarked) Game.marks--;
     }
 
 

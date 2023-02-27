@@ -44,6 +44,8 @@ public class Main extends Application {
     MenuItem solutionOption = new MenuItem("Solution");
 
     Label timerLabel;
+    Label bombLabel;
+    Label markLabel;
     int time;
     Timeline timeline;
     int difficultyLevel=1, numBombs=10, timeLimit=150, superbomb=0; // default values if a file isn't provided.
@@ -70,7 +72,7 @@ public class Main extends Application {
         menuBar.getMenus().addAll(menu1, menu2);
 
         vBox = new VBox(menuBar);
-        gridPane.add(vBox, 0,0);
+        gridPane.add(vBox, 0,0, 3, 1);
 
 
         createOption.setOnAction(new CreateOptionHandler());
